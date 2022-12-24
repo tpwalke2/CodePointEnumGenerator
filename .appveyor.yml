@@ -10,7 +10,7 @@ build: off
 test: off
 
 build_script:
-- powershell .\bootstrap.ps1 {build}
+- powershell .\bootstrap.ps1 %build%
 
 #---------------------------------#
 #        Branches to build        #
