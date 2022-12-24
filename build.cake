@@ -20,7 +20,7 @@ var ignoredPublishExtensions = new HashSet<string> {".pdb"};
 
 var solutionPath = "./CodePointEnumGenerator.sln";
 
-var frameworkVersion = "net6.0"
+var frameworkVersion = "net6.0";
 
 var testProjects = GetFiles("./**/*Tests.csproj")
                     .Select(testProject => new TestProject {
