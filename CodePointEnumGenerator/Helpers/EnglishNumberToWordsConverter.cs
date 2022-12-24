@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 // Based on https://github.com/Humanizr/Humanizer/blob/main/src/Humanizer/Localisation/NumberToWords/EnglishNumberToWordsConverter.cs
 
@@ -16,6 +17,8 @@ internal static class EnglishNumberToWordsConverter
     private const int Twenty = 20;
     private const int Ten = 10;
     
+    private const string Negative = "Negative";
+
     private static readonly string[] UnitsMap =
     {
         "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve",
@@ -43,7 +46,7 @@ internal static class EnglishNumberToWordsConverter
             case 0:
                 return GetUnitValue(0);
             case < 0:
-                return $"Negative{ToWords(-number)}";
+                return $"{Negative}{ToWords(-number)}";
         }
 
         var parts = new List<string>();
