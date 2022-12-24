@@ -1,5 +1,3 @@
-#addin nuget:?package=Cake.Incubator&version=7.0.0
-
 var target = Argument("target", "Default");
 var buildNumber = Argument("buildNumber", -1);
 var verbose = Argument("verbose", false);
@@ -22,12 +20,12 @@ var ignoredPublishExtensions = new HashSet<string> {".pdb"};
 
 var solutionPath = "./CodePointEnumGenerator.sln";
 
+var frameworkVersion = "net6.0"
+
 var testProjects = GetFiles("./**/*Tests.csproj")
-                    .Select(testProject => (testProject, ParseProject(testProject.FullPath, configuration: "Debug")))
-                    .Select(x => new TestProject {
-                        FullPath = x.testProject.FullPath,
-                        AssemblyName = x.Item2.AssemblyName,
-                        FrameworkVersion = x.Item2.TargetFrameworkVersions.First()
+                    .Select(testProject => new TestProject {
+                        FullPath = testProject.FullPath,
+                        FrameworkVersion = frameworkVersion
                     })
                     .ToList();
 
@@ -155,6 +153,5 @@ private void ParallelInvoke<TSource>(IEnumerable<TSource> source, Action<TSource
 class TestProject
 {
     public string FullPath { get; set; }
-    public string AssemblyName { get; set; }
     public string FrameworkVersion { get; set; }
 }
