@@ -72,15 +72,15 @@ Task("Test")
         ParallelInvoke(testProjects, DoTest);
     });
 
-Task("Publish")
+Task("Pack")
     .IsDependentOn("Test")
     .Does(() =>
     {
-        DoMSBuildPublish();
+        DoPack();
     });
 
 Task("Default")
-    .IsDependentOn("Publish");
+    .IsDependentOn("Pack");
 
 RunTarget(target);
 
@@ -125,14 +125,18 @@ private void DoTest(TestProject testProject) {
     DotNetTest(testProject.FullPath, settings);
 }
 
-private void DoMSBuildPublish() {
-    var settings = new DotNetMSBuildSettings()
-            .SetVersion(currentVersion)
-            .WithProperty("FileVersion", currentVersion)
-            .WithProperty("InformationalVersion", currentVersion)
-            .SetMaxCpuCount(-1)
-            .SetConfiguration("Release");
-    DotNetMSBuild("./CodePointEnumGenerator/CodePointEnumGenerator.csproj", settings);
+private void DoPack() {
+    var settings = new DotNetPackSettings {
+        Configuration = "Release",
+        IncludeSource = false,
+        IncludeSymbols = false,
+        NoBuild = true,
+        NoLogo = true,
+        NoRestore = true,
+        OutputDirectory = "./artifacts/"
+    };
+
+    DotNetPack(solutionPath, settings);
 }
 
 private void ParallelInvoke<TSource>(IEnumerable<TSource> source, Action<TSource> invokeAction) {
