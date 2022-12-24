@@ -132,7 +132,7 @@ private void DoMSBuildPublish() {
             .WithProperty("InformationalVersion", currentVersion)
             .SetMaxCpuCount(-1)
             .SetConfiguration("Release");
-    DotNetMSBuild($"./CodePointEnumGenerator}/CodePointEnumGenerator.csproj", settings);
+    DotNetMSBuild("./CodePointEnumGenerator/CodePointEnumGenerator.csproj", settings);
 }
 
 private void ParallelInvoke<TSource>(IEnumerable<TSource> source, Action<TSource> invokeAction) {
