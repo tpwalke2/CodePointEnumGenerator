@@ -1,0 +1,24 @@
+#---------------------------------#
+#  Build Image                    #
+#---------------------------------#
+image: Visual Studio 2022
+
+#---------------------------------#
+#  Custom Build Script            #
+#---------------------------------#
+build: off
+test: off
+
+build_script:
+- ./bootstrap.ps1 {build}
+
+#---------------------------------#
+#        Branches to build        #
+#---------------------------------#
+branches:
+  # Allowed list
+  only:
+    - main
+    - develop
+    - /release/.*/
+    - /hotfix/.*/
