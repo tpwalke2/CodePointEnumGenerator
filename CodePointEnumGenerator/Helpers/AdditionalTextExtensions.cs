@@ -7,11 +7,11 @@ namespace CodePointEnumGenerator.Helpers;
 
 public static class AdditionalTextExtensions
 {
-    public static string GenerateEnumName(this AdditionalText file) => Path.GetFileName(file.Path)
-                                                                           .Replace(".codepoints",
-                                                                               "",
-                                                                               StringComparison.OrdinalIgnoreCase)
-                                                                           .Replace("-", "");
+    public static string GetEnumFileName(this AdditionalText file) => Path.GetFileName(file.Path)
+                                                                          .Replace(".codepoints",
+                                                                              "",
+                                                                              StringComparison.OrdinalIgnoreCase)
+                                                                          .Replace("-", "");
     
     public static IEnumerable<(string, string)> GetEnumValues(this AdditionalText file)
     {

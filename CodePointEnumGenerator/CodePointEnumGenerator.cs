@@ -36,7 +36,7 @@ public class CodePointEnumGenerator : ISourceGenerator
         
         foreach (var file in files)
         {
-            var enumName = file.GenerateEnumName();
+            var enumName = file.GetEnumFileName();
 
             context.AddSource(
                 $"{enumName}.g.cs",
