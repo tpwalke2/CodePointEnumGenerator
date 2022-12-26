@@ -5,7 +5,6 @@
         <LangVersion>10</LangVersion>
         <Nullable>enable</Nullable>
         <PackageId>CodePointEnumGenerator</PackageId>
-        <Version>0.1.0</Version>
         <IsPackable>true</IsPackable>
     </PropertyGroup>
 

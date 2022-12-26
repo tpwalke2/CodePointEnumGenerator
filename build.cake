@@ -136,7 +136,12 @@ private void DoPack() {
         IncludeSource = false,
         IncludeSymbols = false,
         NoLogo = true,
-        OutputDirectory = "./artifacts/"
+        OutputDirectory = "./artifacts/",
+        MSBuildSettings = new DotNetMSBuildSettings()
+            .SetVersion(currentVersion)
+            .WithProperty("FileVersion", currentVersion)
+            .WithProperty("InformationalVersion", currentVersion)
+            .SetMaxCpuCount(-1)
     };
 
     DotNetPack(solutionPath, settings);
