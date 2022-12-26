@@ -1,6 +1,9 @@
 param (
+    [Parameter(Mandatory=$true)]
     [int]$buildNumber,
+    [Parameter(Mandatory=$true)]
     [string]$branch,
+    [Parameter(Mandatory=$true)]
     [string]$buildPath)
 
 dotnet tool restore
