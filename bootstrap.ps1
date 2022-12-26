@@ -1,10 +1,10 @@
 param (
     [Parameter(Mandatory=$true)]
-    $buildNumber,
+    [int]$buildNumber,
     [Parameter(Mandatory=$true)]
-    $branch,
+    [System.String]$branch,
     [Parameter(Mandatory=$true)]
-    $buildPath)
+    [System.String]$buildPath)
 
 dotnet tool restore
 dotnet cake build.cake --bootstrap --buildNumber=$buildNumber -branch=$branch -buildPath="$buildPath"

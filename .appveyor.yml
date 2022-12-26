@@ -10,7 +10,7 @@ build: off
 test: off
 
 build_script:
-- powershell -file .\bootstrap.ps1 -buildNumber %build% -branch %branch% -buildPath %APPVEYOR_BUILD_FOLDER%
+- powershell .\bootstrap.ps1 -buildNumber %build% -branch %branch% -buildPath %APPVEYOR_BUILD_FOLDER%
 
 #---------------------------------#
 #        Branches to build        #
