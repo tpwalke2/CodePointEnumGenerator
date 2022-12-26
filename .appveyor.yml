@@ -22,3 +22,7 @@ branches:
     - develop
     - /release/.*/
     - /hotfix/.*/
+
+artifacts:
+  - path: '**/artifacts/*.nupkg'
+    name: NuGet Packages
