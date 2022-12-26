@@ -43,7 +43,9 @@ public class CodePointEnumGenerator : ISourceGenerator
                 SourceText.From(
                     CodeGeneration.BuildEnumFileContents(
                         enumName,
-                        file.GetEnumValues(),
+                        file.GetText()!
+                            .ToString()
+                            .GetEnumValues(),
                         file.Path.ToNamespace()),
                     Encoding.UTF8));
         }

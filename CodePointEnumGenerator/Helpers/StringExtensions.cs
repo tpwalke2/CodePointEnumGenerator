@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,17 +16,17 @@ public static class StringExtensions
             "" => throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input)),
             _ => string.Concat(input[0].ToString().ToUpper(), input.ToLowerInvariant().AsSpan(1))
         };
-    
+
     public static string ToNamespace(this string filePath)
     {
         var folders = (Path.GetDirectoryName(filePath) ?? "").Split(Path.DirectorySeparatorChar);
 
         var indexOfFirstSeparators = folders.Length > 0 && folders[0].Contains(':') ? 1 : 0;
-        
+
         for (var i = 0; i < folders.Length; i++)
         {
             if (!folders[i].Contains('.')) continue;
-            
+
             indexOfFirstSeparators = i;
             break;
         }
@@ -59,5 +60,35 @@ public static class StringExtensions
                  .Select(s => s.FirstCharToUpper()));
 
         return sb.ToString();
+    }
+
+    public static IEnumerable<(string, string)> GetEnumValues(this string contents)
+    {
+        var seenEnumValues = new Dictionary<string, int>();
+        var values         = new List<(string, string)>();
+
+        foreach (var line in contents
+                     .Split(
+                         new[] { "\r\n", "\r", "\n" },
+                         StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+        {
+            var parsed = line.Split(" ", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+            if (parsed.Length != 2) continue;
+
+            var enumValueName = parsed[0].ToEnumEntry();
+            if (!seenEnumValues.ContainsKey(enumValueName))
+            {
+                seenEnumValues[enumValueName] = 1;
+            }
+            else
+            {
+                seenEnumValues[enumValueName]++;
+                enumValueName = $"{enumValueName}{seenEnumValues[enumValueName]}";
+            }
+
+            values.Add((enumValueName, parsed[1]));
+        }
+
+        return values;
     }
 }
