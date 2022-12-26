@@ -148,6 +148,8 @@ private void DoTag(
     string tagName) {
     if (!IsRelease(branch)) return;
 
+    Information($"Tagging '{branch}' with '{currentVersion}'");
+
     GitTag(buildDirectory, tagName);
 }
 
