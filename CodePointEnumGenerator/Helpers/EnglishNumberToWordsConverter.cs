@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 // Based on https://github.com/Humanizr/Humanizer/blob/main/src/Humanizer/Localisation/NumberToWords/EnglishNumberToWordsConverter.cs
 
