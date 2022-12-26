@@ -130,9 +130,7 @@ private void DoPack() {
         Configuration = "Release",
         IncludeSource = false,
         IncludeSymbols = false,
-        NoBuild = true,
         NoLogo = true,
-        NoRestore = true,
         OutputDirectory = "./artifacts/"
     };
 
