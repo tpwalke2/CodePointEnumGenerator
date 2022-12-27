@@ -2,6 +2,7 @@
 
 var target = Argument("target", "Default");
 var buildNumber = Argument("buildNumber", -1);
+var currentRelease = Argument("currentRelease", "0.1.0");
 var branch = Argument("branch", "");
 var buildPath = Argument("buildPath", "");
 var verbose = Argument("verbose", false);
@@ -12,12 +13,12 @@ if (string.IsNullOrEmpty(branch)) throw new Exception("Branch was not provided."
 if (string.IsNullOrEmpty(buildPath)) throw new Exception("Build Path was not provided.");
 
 var currentDate = System.DateTime.UtcNow;
-var currentVersion = $"{currentDate.Year}.{currentDate.Month:D2}.{buildNumber}";
-Information($"Current Version: {currentVersion}");
+var buildVersion = $"{currentRelease}-{currentDate.Year}{currentDate.Month:D2}{buildNumber}";
+Information($"Current Version: {buildVersion}");
 
 var buildOutputDir = MakeAbsolute(Directory("build"));
 var deployDir = buildOutputDir.Combine(Directory("deploy"));
-var testResultsDir = deployDir.Combine(currentVersion).Combine("test-results");
+var testResultsDir = deployDir.Combine(buildVersion).Combine("test-results");
 Information($"Build Output Path: {buildOutputDir}");
 
 var configurations = new []{"Debug", "Release"};
@@ -97,9 +98,9 @@ private void DoBuild() {
         NoLogo = true,
         NoRestore = true,
         MSBuildSettings = new DotNetMSBuildSettings()
-            .SetVersion(currentVersion)
-            .WithProperty("FileVersion", currentVersion)
-            .WithProperty("InformationalVersion", currentVersion)
+            .SetVersion(buildVersion)
+            .WithProperty("FileVersion", buildVersion)
+            .WithProperty("InformationalVersion", buildVersion)
             .SetMaxCpuCount(-1)
     };
 
@@ -138,9 +139,9 @@ private void DoPack() {
         NoLogo = true,
         OutputDirectory = "./artifacts/",
         MSBuildSettings = new DotNetMSBuildSettings()
-            .SetVersion(currentVersion)
-            .WithProperty("FileVersion", currentVersion)
-            .WithProperty("InformationalVersion", currentVersion)
+            .SetVersion(buildVersion)
+            .WithProperty("FileVersion", buildVersion)
+            .WithProperty("InformationalVersion", buildVersion)
             .SetMaxCpuCount(-1)
     };
 
@@ -153,7 +154,7 @@ private void DoTag(
     string tagName) {
     if (!IsRelease(branch)) return;
 
-    Information($"Tagging '{branch}' with '{currentVersion}'");
+    Information($"Tagging '{branch}' with '{buildVersion}'");
 
     GitTag(buildDirectory, tagName);
 }
