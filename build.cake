@@ -47,7 +47,7 @@ Task("DotNetClean")
     .IsDependentOn("Clean")
     .Does(() =>
     {
-        ParallelInvoke(configurations, DoDotNetClean);
+        ParallelInvoke(configurations, configuration => DoDotNetClean(configuration, solutionPath));
     });
 
 Task("Restore")
@@ -61,7 +61,7 @@ Task("Build")
     .IsDependentOn("Restore")
     .Does(() =>
     {
-        DoBuild();
+        DoBuild(buildVersion, solutionPath);
     });
 
 Task("PrepareTest")
@@ -75,14 +75,14 @@ Task("Test")
     .IsDependentOn("PrepareTest")
     .Does(() =>
     {
-        ParallelInvoke(testProjects, DoTest);
+        ParallelInvoke(testProjects, testProject => DoTest(testProject, testResultsDir));
     });
 
 Task("Pack")
     .IsDependentOn("Test")
     .Does(() =>
     {
-        DoPack();
+        DoPack(buildVersion, solutionPath);
     });
 
 Task("Default")
@@ -90,7 +90,7 @@ Task("Default")
 
 RunTarget(target);
 
-private void DoBuild() {
+private void DoBuild(string version, string path) {
     var settings = new DotNetBuildSettings
     {
         Configuration = "Debug",
@@ -98,25 +98,25 @@ private void DoBuild() {
         NoLogo = true,
         NoRestore = true,
         MSBuildSettings = new DotNetMSBuildSettings()
-            .SetVersion(buildVersion)
-            .WithProperty("FileVersion", buildVersion)
-            .WithProperty("InformationalVersion", buildVersion)
+            .SetVersion(version)
+            .WithProperty("FileVersion", version)
+            .WithProperty("InformationalVersion", version)
             .SetMaxCpuCount(-1)
     };
 
-    DotNetBuild(solutionPath, settings);
+    DotNetBuild(path, settings);
 }
 
-private void DoDotNetClean(string configuration) {
+private void DoDotNetClean(string configuration, string path) {
     var settings = new DotNetCleanSettings
     {
         Configuration = configuration
     };
 
-    DotNetClean(solutionPath, settings);
+    DotNetClean(path, settings);
 }
 
-private void DoTest(TestProject testProject) {
+private void DoTest(TestProject testProject, string outputPath) {
     var settings = new DotNetTestSettings
     {
         Configuration = "Debug",
@@ -125,13 +125,13 @@ private void DoTest(TestProject testProject) {
         NoBuild = true,
         NoLogo = true,
         NoRestore = true,
-        ResultsDirectory = testResultsDir
+        ResultsDirectory = outputPath
     };
 
     DotNetTest(testProject.FullPath, settings);
 }
 
-private void DoPack() {
+private void DoPack(string version, string path) {
     var settings = new DotNetPackSettings {
         Configuration = "Release",
         IncludeSource = false,
@@ -139,13 +139,13 @@ private void DoPack() {
         NoLogo = true,
         OutputDirectory = "./artifacts/",
         MSBuildSettings = new DotNetMSBuildSettings()
-            .SetVersion(buildVersion)
-            .WithProperty("FileVersion", buildVersion)
-            .WithProperty("InformationalVersion", buildVersion)
+            .SetVersion(version)
+            .WithProperty("FileVersion", version)
+            .WithProperty("InformationalVersion", version)
             .SetMaxCpuCount(-1)
     };
 
-    DotNetPack(solutionPath, settings);
+    DotNetPack(path, settings);
 }
 
 private void DoTag(
