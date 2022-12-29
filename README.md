@@ -1,8 +1,8 @@
 # CodePointEnumGenerator
 
-Source generator that creates enums for any font codepoint files that are contained in the project as Additional Files.
+A C# source generator that generates enums for all font codepoint files are contained in the project as Additional Files.
 
-The resulting enum can be used to generate strongly-typed references to the byte value of specific glyphs in the associate font.
+Each resulting enum can be used for strongly-typed references to the byte value of specific glyphs in the associated font.
 
 ## To Use
 
