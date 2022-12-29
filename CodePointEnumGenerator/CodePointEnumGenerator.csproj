@@ -4,8 +4,16 @@
         <TargetFramework>net6.0</TargetFramework>
         <LangVersion>10</LangVersion>
         <Nullable>enable</Nullable>
-        <PackageId>CodePointEnumGenerator</PackageId>
         <IsPackable>true</IsPackable>
+        <Description>
+            A C# source generator that generates enums for font codepoint files contained in the project that can then
+            be used for strongly-typed references to the byte value of specific glyphs in the associated font.</Description>
+        <PackageId>CodePointEnumGenerator</PackageId>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageProjectUrl>https://github.com/tpwalke2/CodePointEnumGenerator</PackageProjectUrl>
+        <PackageReadmeFile>https://github.com/tpwalke2/CodePointEnumGenerator/blob/main/README.md</PackageReadmeFile>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/tpwalke2/CodePointEnumGenerator</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,5 +23,11 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\LICENSE" Pack="true" PackagePath="">
+        <Link>LICENSE</Link>
+      </None>
     </ItemGroup>
 </Project>
