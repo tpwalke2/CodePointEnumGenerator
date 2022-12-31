@@ -5,6 +5,7 @@
         <LangVersion>10</LangVersion>
         <Nullable>enable</Nullable>
         <IsPackable>true</IsPackable>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
         <Description>
             A C# source generator that generates enums for font codepoint files contained in the project that can then
             be used for strongly-typed references to the byte value of specific glyphs in the associated font.</Description>
@@ -35,5 +36,9 @@
         <None Include="..\README.md" Pack="true" PackagePath="">
             <Link>README.md</Link>
         </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     </ItemGroup>
 </Project>
