@@ -6,16 +6,17 @@ Each resulting enum can be used for strongly-typed references to the byte value 
 
 ## To Use
 
-1. Reference the Generator project as an analyzer:
+1. Reference the Generator package as an analyzer:
 ```xml
 <ItemGroup>
-    <ProjectReference Include="..\CodePointEnumGenerator\CodePointEnumGenerator.csproj"
+    <PackageReference Include="CodePointEnumGenerator"
+                      Version="1.0.0.30"
                       OutputItemType="Analyzer"
                       ReferenceOutputAssembly="false" />
 </ItemGroup>
 ```
-2. Include codepoints files for fonts with a build action of `AddtionalFiles`.
-3. Rebuild the solution.
+1. Include codepoints files for fonts with a build action of `AddtionalFiles`.
+2. Rebuild the solution.
 
 ## Troubleshooting
 The `Source Generators` folder should appear under `Dependencies\.NET 6.0` for the project that references the generator. There should also
