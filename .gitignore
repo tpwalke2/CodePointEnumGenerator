@@ -351,3 +351,7 @@ MigrationBackup/
 
 # IntelliJ Idea
 .idea/
+
+# Build output folders
+tools/
+output/

@@ -10,7 +10,7 @@ build: off
 test: off
 
 build_script:
-- powershell .\bootstrap.ps1 -buildNumber %APPVEYOR_BUILD_NUMBER% -branch "%APPVEYOR_REPO_BRANCH%" -buildPath "%APPVEYOR_BUILD_FOLDER%"
+- powershell .\bootstrap.ps1 -buildNumber %APPVEYOR_BUILD_NUMBER% -branch "%APPVEYOR_REPO_BRANCH%" -buildPath "%APPVEYOR_BUILD_FOLDER%" -gitHubApiKey "%GitHubAPIKey%" -nuGetApiKey "%NuGetAPIKey%"
 
 #---------------------------------#
 #        Branches to build        #
@@ -22,7 +22,3 @@ branches:
     - develop
     - /release/.*/
     - /hotfix/.*/
-
-artifacts:
-  - path: '**/artifacts/*.nupkg'
-    name: NuGet Packages

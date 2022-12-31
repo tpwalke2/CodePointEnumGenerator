@@ -11,7 +11,7 @@
         <PackageId>CodePointEnumGenerator</PackageId>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageProjectUrl>https://github.com/tpwalke2/CodePointEnumGenerator</PackageProjectUrl>
-        <PackageReadmeFile>https://github.com/tpwalke2/CodePointEnumGenerator/blob/main/README.md</PackageReadmeFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/tpwalke2/CodePointEnumGenerator</RepositoryUrl>
     </PropertyGroup>
@@ -29,5 +29,11 @@
       <None Include="..\LICENSE" Pack="true" PackagePath="">
         <Link>LICENSE</Link>
       </None>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <None Include="..\README.md" Pack="true" PackagePath="">
+            <Link>README.md</Link>
+        </None>
     </ItemGroup>
 </Project>
