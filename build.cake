@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 #load "./build/Utilities.cake";
 #load "./build/BuildOperations.cake";
 #load "./build/TestOperations.cake";
-#load "./build/PackOperations.cake";
 #load "./build/PublishOperations.cake";
 
 // Arguments
@@ -27,8 +26,6 @@ var configurations = new []{"Debug", "Release"};
 
 const string SolutionPath = "./CodePointEnumGenerator.sln";
 const string FrameworkVersion = "net6.0";
-const string RepositoryOwner = "tpwalke2";
-const string RepositoryId = "CodePointEnumGenerator";
 
 var testProjects = GetFiles("./**/*Tests.csproj")
                     .Select(testProject => new TestProject {
@@ -91,21 +88,10 @@ Task("Test")
             config.MaxDegreeOfParallelism);
     });
 
-Task("Pack")
-    .IsDependentOn("Test")
-    .Does(() =>
-    {
-        DoPack(
-            SolutionPath,
-            paths.Artifacts,
-            msBuildSettings,
-            config.Verbose);
-    });
-
 Task("Publish")
-    .IsDependentOn("Pack")
+    .IsDependentOn("Test")
     .Does(async () => {
-        await DoPublish(config, paths);
+        await DoPublish(config, paths, msBuildSettings, SolutionPath);
     });
 
 Task("Default")

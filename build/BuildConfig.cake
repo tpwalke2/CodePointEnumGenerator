@@ -70,4 +70,11 @@ public class BuildConfig
         DefaultValue = ""
     )]
     public string CurrentVersion { get; set; }
+
+    [StringArgument(
+        "tagName",
+        Description = "Tag name.",
+        DefaultValue = ""
+    )]
+    public string TagName { get; set; }
 }

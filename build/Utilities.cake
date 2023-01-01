@@ -1,3 +1,5 @@
+#load "./BuildConfig.cake";
+
 private void FlushDns() {
     var process = new System.Diagnostics.Process();
     var startInfo = new System.Diagnostics.ProcessStartInfo();
@@ -11,11 +13,6 @@ private void FlushDns() {
 private string GetVersion(BuildConfig buildConfig) {
     var currentDate = System.DateTime.UtcNow;
     return $"{buildConfig.CurrentRelease}.{buildConfig.BuildNumber}";
-}
-
-private bool IsRelease(string branch) {
-    return branch.Equals("main", StringComparison.OrdinalIgnoreCase)
-           || branch.StartsWith("hotfix", StringComparison.OrdinalIgnoreCase);
 }
 
 private void ParallelInvoke<TSource>(
