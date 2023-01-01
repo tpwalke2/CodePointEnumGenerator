@@ -7,9 +7,13 @@ param (
     [System.String]$isTag,
     [System.String]$tagVariableName)
 
-$tagName = ""
-if ($isTag.Equals("true")) { $tagName = [System.Environment]::GetEnvironmentVariable($tagVariableName) }
-
 dotnet tool restore
-dotnet cake build.cake --bootstrap --buildNumber=$buildNumber --branch="$branch" --buildPath="$buildPath" --gitHubApiKey="$gitHubApiKey" --nuGetApiKey="$nuGetApiKey" --tagName="$tagName"
-dotnet cake build.cake --buildNumber=$buildNumber --branch="$branch" --buildPath="$buildPath" --gitHubApiKey="$gitHubApiKey" --nuGetApiKey="$nuGetApiKey" --tagName="$tagName"
+
+if ($isTag.Equals("true")) {
+    $tagName = [System.Environment]::GetEnvironmentVariable($tagVariableName)
+    dotnet cake build.cake --bootstrap --buildNumber=$buildNumber --branch="$branch" --buildPath="$buildPath" --gitHubApiKey="$gitHubApiKey" --nuGetApiKey="$nuGetApiKey" --tagName="$tagName"
+    dotnet cake build.cake --buildNumber=$buildNumber --branch="$branch" --buildPath="$buildPath" --gitHubApiKey="$gitHubApiKey" --nuGetApiKey="$nuGetApiKey" --tagName="$tagName"
+} else {
+    dotnet cake build.cake --bootstrap --buildNumber=$buildNumber --branch="$branch" --buildPath="$buildPath" --gitHubApiKey="$gitHubApiKey" --nuGetApiKey="$nuGetApiKey"
+    dotnet cake build.cake --buildNumber=$buildNumber --branch="$branch" --buildPath="$buildPath" --gitHubApiKey="$gitHubApiKey" --nuGetApiKey="$nuGetApiKey"
+}
