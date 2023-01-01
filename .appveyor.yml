@@ -10,7 +10,7 @@ build: off
 test: off
 
 build_script:
-- powershell .\bootstrap.ps1 -buildNumber %APPVEYOR_BUILD_NUMBER% -branch "%APPVEYOR_REPO_BRANCH%" -buildPath "%APPVEYOR_BUILD_FOLDER%" -gitHubApiKey "%GitHubAPIKey%" -nuGetApiKey "%NuGetAPIKey%" -isTag %APPVEYOR_REPO_TAG% -tagVariableName "APPVEYOR_REPO_TAG_NAME"
+- powershell .\bootstrap.ps1 -buildNumber %APPVEYOR_BUILD_NUMBER% -branch "%APPVEYOR_REPO_BRANCH%" -buildPath "%APPVEYOR_BUILD_FOLDER%" -gitHubApiKey "%GitHubAPIKey%" -nuGetApiKey "%NuGetAPIKey%" -isTag "%APPVEYOR_REPO_TAG%" -tagVariableName "APPVEYOR_REPO_TAG_NAME"
 
 #---------------------------------#
 #        Branches to build        #
