@@ -22,7 +22,10 @@ private async Task DoPublish(
     DotNetMSBuildSettings dotNetMSBuildSettings,
     string solutionPath
 ) {
-    if (!IsRelease(config.Branch, config.TagName)) return;
+    if (!IsRelease(config.Branch)) return;
+
+    var tagName = $"Release-{config.CurrentVersion}";
+    Information($"Publishing new release as '{tagName}'");
     
     FlushDns();
     DoPack(solutionPath, paths.Artifacts, dotNetMSBuildSettings, config.Verbose);
@@ -31,8 +34,8 @@ private async Task DoPublish(
 
     var releaseDownload = await DoGitHubRelease(
         config,
-        packageFile
-        );
+        packageFile,
+        tagName);
     DoNuGetPublish(
         config,
         packageFile,
@@ -59,21 +62,22 @@ private void DoPack(
 
 private async Task<ReleaseDownload> DoGitHubRelease(
     BuildConfig config,
-    FilePath packageToUpload) {
+    FilePath packageToUpload,
+    string tagName) {
     Information($"Creating release on GitHub for branch '{config.Branch}' and version '{config.CurrentVersion}'");
 
-    // get GitHub release
-    var getRelease = await GetGitHubRelease(
+    var createReleaseResponse = await CreateGitHubRelease(
         config.GitHubApiKey,
-        config.TagName,
+        tagName,
+        config.Branch,
         config.Verbose
     );
 
-    Information($"Upload URL: {getRelease.upload_url}");
+    Information($"Upload URL: {createReleaseResponse.upload_url}");
 
     var uploadResponse = await UploadAsset(
         config.GitHubApiKey,
-        getRelease.upload_url.Replace("{?name,label}", "", StringComparison.OrdinalIgnoreCase),
+        createReleaseResponse.upload_url.Replace("{?name,label}", "", StringComparison.OrdinalIgnoreCase),
         packageToUpload,
         config.Verbose);
     
@@ -108,6 +112,34 @@ private async Task<UploadGitHubReleaseAssetResponse> UploadAsset(
     return JsonSerializer.Deserialize<UploadGitHubReleaseAssetResponse>(await HttpPostAsync(
         uploadUrl,
         uploadAssetSettings));
+}
+
+private async Task<CreateGitHubReleaseResponse> CreateGitHubRelease(
+    string apiKey,
+    string tagName,
+    string branch,
+    bool verbose
+) {
+    // https://docs.github.com/en/rest/releases/releases?apiVersion=2022-11-28#create-a-release
+    if (string.IsNullOrEmpty(apiKey)) throw new Exception("GitHub API key was not provided.");
+
+    var createReleaseBody = new CreateGitHubReleaseRequest {
+        tag_name = tagName,
+        target_commitish = branch,
+        name = tagName,
+        draft = false,
+        generate_release_notes = true
+    };
+    var createReleaseUrl = $"{GitHubApiBaseUrl}/{RepositoryOwner}/{RepositoryId}/releases";
+
+    return JsonSerializer.Deserialize<CreateGitHubReleaseResponse>(await HttpPostAsync(
+        createReleaseUrl,
+        new HttpSettings { LogRequestResponseOutput = verbose }
+            .SetAccept("application/vnd.github+json")
+            .SetAuthorization("Bearer", apiKey)
+            .SetContentType("application/json")
+            .SetJsonRequestBody(createReleaseBody, false)
+            .EnsureSuccessStatusCode(true)));
 }
 
 private async Task<GetReleaseByTagResponse> GetGitHubRelease(
@@ -149,8 +181,8 @@ private void DoNuGetPublish(
     DotNetNuGetPush(packageFile, settings);
 }
 
-private bool IsRelease(string branch, string tagName) {
-    return branch.Equals("main") && tagName.StartsWith("Release-");
+private bool IsRelease(string branch) {
+    return branch.Equals("main");
 }
 
 class ReleaseDownload {
