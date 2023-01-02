@@ -1,7 +1,27 @@
+#load "./BuildConfig.cake";
+#load "./Utilities.cake";
+
+var configurations = new []{"Debug", "Release"};
+
 private void DoBuild(
-    string path,
-    bool verbose,
+    BuildConfig config,
+    string solutionPath,
     DotNetMSBuildSettings dotNetMSBuildSettings) {
+
+    ParallelInvoke(
+        configurations,
+        configuration => DoDotNetClean(
+            configuration,
+            solutionPath,
+            config.Verbose,
+            dotNetMSBuildSettings),
+        config.MaxDegreeOfParallelism);
+
+    DotNetRestore(new DotNetRestoreSettings {
+        DiagnosticOutput = config.Verbose,
+        MSBuildSettings = dotNetMSBuildSettings
+    });
+
     var settings = new DotNetBuildSettings
     {
         Configuration = "Debug",
@@ -9,10 +29,10 @@ private void DoBuild(
         NoLogo = true,
         NoRestore = true,
         MSBuildSettings = dotNetMSBuildSettings,
-        DiagnosticOutput = verbose
+        DiagnosticOutput = config.Verbose
     };
 
-    DotNetBuild(path, settings);
+    DotNetBuild(solutionPath, settings);
 }
 
 private void DoDotNetClean(

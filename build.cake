@@ -22,8 +22,6 @@ Information($"Current Version: {config.CurrentVersion}");
 var paths = new BuildPaths(Context, config.BuildPath);
 Information($"Build Output Paths\n{paths}");
 
-var configurations = new []{"Debug", "Release"};
-
 const string SolutionPath = "./CodePointEnumGenerator.sln";
 const string FrameworkVersion = "net6.0";
 
@@ -53,23 +51,9 @@ Task("Build")
     .IsDependentOn("Clean")
     .Does(() =>
     {
-        ParallelInvoke(
-            configurations,
-            configuration => DoDotNetClean(
-                configuration,
-                SolutionPath,
-                config.Verbose,
-                msBuildSettings),
-            config.MaxDegreeOfParallelism);
-
-        DotNetRestore(new DotNetRestoreSettings {
-            DiagnosticOutput = config.Verbose,
-            MSBuildSettings = msBuildSettings
-        });
-
         DoBuild(
+            config,
             SolutionPath,
-            config.Verbose,
             msBuildSettings);
     });
 
