@@ -22,3 +22,9 @@ branches:
 
 # GitHub releases create tags, skip builds on tags
 skip_tags: true
+
+# skip builds on some types of commits
+skip_commits:
+  message: /^\[chore\]/  # message starts with [chore]
+  files:
+    - '**/README.md'     # changes to readme files
