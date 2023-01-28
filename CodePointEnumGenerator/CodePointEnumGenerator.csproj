@@ -1,10 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>10</LangVersion>
         <Nullable>enable</Nullable>
         <IsPackable>true</IsPackable>
+        <IsRoslynComponent>true</IsRoslynComponent>
         <IncludeBuildOutput>false</IncludeBuildOutput>
         <Description>
             A C# source generator that generates enums for font codepoint files contained in the project that can then
@@ -23,7 +24,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.0" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup>

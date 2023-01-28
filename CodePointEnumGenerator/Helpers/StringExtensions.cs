@@ -14,7 +14,7 @@ public static class StringExtensions
         {
             null => throw new ArgumentNullException(nameof(input)),
             "" => throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input)),
-            _ => string.Concat(input[0].ToString().ToUpper(), input.ToLowerInvariant().AsSpan(1))
+            _ => string.Concat(input[0].ToString().ToUpper(), input.Substring(1))
         };
 
     public static string ToNamespace(this string filePath)
@@ -31,7 +31,7 @@ public static class StringExtensions
             break;
         }
 
-        return string.Join('.', folders.Skip(indexOfFirstSeparators));
+        return string.Join(".", folders.Skip(indexOfFirstSeparators));
     }
 
     private static readonly Regex EnumNameParser = new(
@@ -45,20 +45,21 @@ public static class StringExtensions
 
         var sb = new StringBuilder();
 
-        var numericPrefix = match.Groups["numericPrefix"].Value.AsSpan();
+        var numericPrefix = match.Groups["numericPrefix"].Value;
         if (numericPrefix.Length > 0)
         {
             sb.Append(long.Parse(numericPrefix).ToWords());
         }
 
-        sb.AppendJoin(
-            string.Empty,
-            match.Groups["word"]
-                 .Captures
-                 .Select(capture => capture.Value)
-                 .Where(s => !string.IsNullOrEmpty(s))
-                 .Select(s => s.FirstCharToUpper()));
+        var captures = match.Groups["word"].Captures;
+        for (var i = 0; i < captures.Count; i++)
+        {
+            var capture = captures[i].Value;
+            if (string.IsNullOrEmpty(capture)) continue;
 
+            sb.Append(capture.FirstCharToUpper());
+        }
+        
         return sb.ToString();
     }
 
@@ -70,9 +71,9 @@ public static class StringExtensions
         foreach (var line in contents
                      .Split(
                          new[] { "\r\n", "\r", "\n" },
-                         StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+                         StringSplitOptions.RemoveEmptyEntries))
         {
-            var parsed = line.Split(" ", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+            var parsed = line.Split(new[] {" "}, StringSplitOptions.RemoveEmptyEntries);
             if (parsed.Length != 2) continue;
 
             var enumValueName = parsed[0].ToEnumEntry();

@@ -15,7 +15,9 @@ namespace {@namespace};
 
 public enum {enumName} {{
 ")
-                              .AppendJoin(",\n", values.Select(tuple => $@"    {tuple.Item1} = 0x{tuple.Item2}"))
+                              .Append(string.Join(
+                                          ",\n",
+                                          values.Select(tuple => $@"    {tuple.Item1} = 0x{tuple.Item2}")))
                               .Append(@"
 }")
                               .ToString();
