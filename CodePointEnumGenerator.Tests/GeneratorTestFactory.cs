@@ -36,7 +36,7 @@ public static class GeneratorTestFactory
         var references = new MetadataReference[]
         {
             MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-            MetadataReference.CreateFromFile(typeof(CodePointEnumGenerator).Assembly.Location), 
+            MetadataReference.CreateFromFile(typeof(CodePointEnumGenerator).Assembly.Location)
         };
 
         var compilation = CSharpCompilation.Create(

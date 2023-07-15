@@ -26,6 +26,7 @@ public class CodePointEnumGenerator : ISourceGenerator
             context.ReportDiagnostic(
                 Diagnostic.Create(
                     new DiagnosticDescriptor(
+                        // ReSharper disable once StringLiteralTypo
                         "NOFILES",
                         "No Codepoint files found",
                         "",
