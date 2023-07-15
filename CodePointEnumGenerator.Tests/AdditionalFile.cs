@@ -15,7 +15,7 @@ public sealed class AdditionalFile : AdditionalText
         _sourceText = SourceText.From(contents, Encoding.UTF8);
     }
 
-    public override SourceText? GetText(CancellationToken cancellationToken = new()) =>
+    public override SourceText GetText(CancellationToken cancellationToken = new()) =>
         _sourceText;
 
     public override string Path { get; }

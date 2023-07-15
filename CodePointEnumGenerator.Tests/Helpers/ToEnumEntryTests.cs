@@ -8,6 +8,7 @@ public class ToEnumEntryTests
     [Theory]
     [InlineData("add_comment", "AddComment")]
     [InlineData("add", "Add")]
+    // ReSharper disable twice StringLiteralTypo
     [InlineData("addcomment", "Addcomment")]
     [InlineData("1k_plus", "OneKPlus")]
     [InlineData("2k_plus", "TwoKPlus")]
