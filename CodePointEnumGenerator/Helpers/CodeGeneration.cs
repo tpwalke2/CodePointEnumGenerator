@@ -10,15 +10,19 @@ public static class CodeGeneration
         string enumName,
         IEnumerable<(string, string)> values,
         string @namespace) => new StringBuilder()
-                              .Append($@"
-namespace {@namespace};
+                              .Append($$"""
 
-public enum {enumName} {{
-")
+                                        namespace {{@namespace}};
+
+                                        public enum {{enumName}} {
+
+                                        """)
                               .Append(string.Join(
                                           ",\n",
-                                          values.Select(tuple => $@"    {tuple.Item1} = 0x{tuple.Item2}")))
-                              .Append(@"
-}")
+                                          values.Select(tuple => $"    {tuple.Item1} = 0x{tuple.Item2}")))
+                              .Append("""
+
+                                      }
+                                      """)
                               .ToString();
 }

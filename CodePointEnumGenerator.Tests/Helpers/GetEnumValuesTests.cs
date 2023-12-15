@@ -9,8 +9,10 @@ public class GetEnumValuesTests
     [Fact]
     public void MultipleUniqueValues()
     {
-        const string content = @"add e001
-delete e002";
+        const string content = """
+                               add e001
+                               delete e002
+                               """;
         var result = content.GetEnumValues().ToArray();
         
         Assert.Equal(2, result.Length);
@@ -23,8 +25,10 @@ delete e002";
     [Fact]
     public void RemoveUnderscores()
     {
-        const string content = @"add_comment e001
-delete_comment_by_user e002";
+        const string content = """
+                               add_comment e001
+                               delete_comment_by_user e002
+                               """;
         var result = content.GetEnumValues().ToArray();
         
         Assert.Equal(2, result.Length);
@@ -37,8 +41,10 @@ delete_comment_by_user e002";
     [Fact]
     public void DuplicateValues()
     {
-        const string content = @"add e001
-add e002";
+        const string content = """
+                               add e001
+                               add e002
+                               """;
         var result = content.GetEnumValues().ToArray();
         
         Assert.Equal(2, result.Length);
@@ -51,8 +57,10 @@ add e002";
     [Fact]
     public void MissingValue()
     {
-        const string content = @"add
-delete e002";
+        const string content = """
+                               add
+                               delete e002
+                               """;
         var result = content.GetEnumValues().ToArray();
         
         Assert.Single(result);
@@ -63,8 +71,10 @@ delete e002";
     [Fact]
     public void NumericPrefix()
     {
-        const string content = @"1add e001
-2delete e002";
+        const string content = """
+                               1add e001
+                               2delete e002
+                               """;
         var result = content.GetEnumValues().ToArray();
         
         Assert.Equal(2, result.Length);
