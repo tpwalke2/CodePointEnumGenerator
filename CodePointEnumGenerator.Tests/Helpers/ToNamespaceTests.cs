@@ -12,8 +12,8 @@ public class ToNamespaceTests
     [InlineData(@"C:\Source\SongBook\Fonts\", "Source.SongBook.Fonts")]
     [InlineData(@"C:\Source\SongBook\Fonts", "Source.SongBook")]
     [InlineData(@"C:\", "")]
-    [InlineData(@"C:", "")]
-    [InlineData(@"", "")]
+    [InlineData("C:", "")]
+    [InlineData("", "")]
     public void ToNamespace(string input, string expectedOutput)
     {
         Assert.Equal(expectedOutput, input.ToNamespace());

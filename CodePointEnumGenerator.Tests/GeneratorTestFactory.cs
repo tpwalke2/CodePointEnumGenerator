@@ -18,10 +18,7 @@ namespace CodePointEnumGenerator.Tests;
 
 public static class GeneratorTestFactory
 {
-    private static readonly HashSet<string> IgnoredPreDiagnosticErrors = new()
-    {
-        "CS0012", "CS0616", "CS0246", "CS0103"
-    };
+    private static readonly HashSet<string> IgnoredPreDiagnosticErrors = ["CS0012", "CS0616", "CS0246", "CS0103"];
 
     public static (Compilation? Compilation,
         (ImmutableArray<Diagnostic> Before, ImmutableArray<Diagnostic> After) Diagnostics,
