@@ -23,7 +23,7 @@ var paths = new BuildPaths(Context, config.BuildPath);
 Information($"Build Output Paths\n{paths}");
 
 const string SolutionPath = "./CodePointEnumGenerator.sln";
-const string FrameworkVersion = "net6.0";
+const string FrameworkVersion = "net8.0";
 
 var testProjects = GetFiles("./**/*Tests.csproj")
                     .Select(testProject => new TestProject {
