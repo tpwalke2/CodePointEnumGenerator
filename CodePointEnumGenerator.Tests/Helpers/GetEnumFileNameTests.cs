@@ -12,7 +12,7 @@ public class GetEnumFileNameTests
     public void GetEnumFileName(string filePath, string expectedFilename)
     {
         var file = new AdditionalFile(filePath, "");
-        
+
         Assert.Equal(expectedFilename, file.GetEnumFileName());
     }
 }

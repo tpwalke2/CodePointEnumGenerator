@@ -14,14 +14,14 @@ public class GetEnumValuesTests
                                delete e002
                                """;
         var result = content.GetEnumValues().ToArray();
-        
+
         Assert.Equal(2, result.Length);
         Assert.Equal("Add", result[0].Item1);
         Assert.Equal("e001", result[0].Item2);
         Assert.Equal("Delete", result[1].Item1);
         Assert.Equal("e002", result[1].Item2);
     }
-    
+
     [Fact]
     public void RemoveUnderscores()
     {
@@ -30,14 +30,14 @@ public class GetEnumValuesTests
                                delete_comment_by_user e002
                                """;
         var result = content.GetEnumValues().ToArray();
-        
+
         Assert.Equal(2, result.Length);
         Assert.Equal("AddComment", result[0].Item1);
         Assert.Equal("e001", result[0].Item2);
         Assert.Equal("DeleteCommentByUser", result[1].Item1);
         Assert.Equal("e002", result[1].Item2);
     }
-    
+
     [Fact]
     public void DuplicateValues()
     {
@@ -46,14 +46,14 @@ public class GetEnumValuesTests
                                add e002
                                """;
         var result = content.GetEnumValues().ToArray();
-        
+
         Assert.Equal(2, result.Length);
         Assert.Equal("Add", result[0].Item1);
         Assert.Equal("e001", result[0].Item2);
         Assert.Equal("Add2", result[1].Item1);
         Assert.Equal("e002", result[1].Item2);
     }
-    
+
     [Fact]
     public void MissingValue()
     {
@@ -62,12 +62,12 @@ public class GetEnumValuesTests
                                delete e002
                                """;
         var result = content.GetEnumValues().ToArray();
-        
+
         Assert.Single(result);
         Assert.Equal("Delete", result[0].Item1);
         Assert.Equal("e002", result[0].Item2);
     }
-    
+
     [Fact]
     public void NumericPrefix()
     {
@@ -76,7 +76,7 @@ public class GetEnumValuesTests
                                2delete e002
                                """;
         var result = content.GetEnumValues().ToArray();
-        
+
         Assert.Equal(2, result.Length);
         Assert.Equal("OneAdd", result[0].Item1);
         Assert.Equal("e001", result[0].Item2);

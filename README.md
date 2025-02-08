@@ -25,7 +25,7 @@ Each resulting enum can be used for strongly-typed references to the byte value 
 2. Rebuild the solution.
 
 # Troubleshooting
-The `Source Generators` folder should appear under `Dependencies\.NET 6.0` for the project that references the generator. There should also
+The `Source Generators` folder should appear under `Dependencies\.NET 9.0` for the project that references the generator. There should also
 be a separate generated C# file that contains the enum for each `codepoints` file in the project. If either or both of these are not the case:
 - Verify that the generator project is referenced as an `Analyzer`.
 - Verify that the `codepoints` files have a build action of `AdditionalFiles`.
