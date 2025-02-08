@@ -15,20 +15,20 @@ internal static class EnglishNumberToWordsConverter
     private const int Hundred = 100;
     private const int Twenty = 20;
     private const int Ten = 10;
-    
+
     private const string Negative = "Negative";
 
     private static readonly string[] UnitsMap =
-    {
+    [
         "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve",
         "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"
-    };
+    ];
 
     private static readonly string[] TensMap =
-        { "Zero", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety" };
+        ["Zero", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
 
     private static readonly (long, string)[] MultipliersMap =
-    {
+    [
         (Quintillion, nameof(Quintillion)),
         (Quadrillion, nameof(Quadrillion)),
         (Trillion, nameof(Trillion)),
@@ -36,7 +36,7 @@ internal static class EnglishNumberToWordsConverter
         (Million, nameof(Million)),
         (Thousand, nameof(Thousand)),
         (Hundred, nameof(Hundred))
-    };
+    ];
 
     public static string ToWords(this long number)
     {

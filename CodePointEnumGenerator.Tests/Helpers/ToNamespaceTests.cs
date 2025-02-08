@@ -7,8 +7,10 @@ public class ToNamespaceTests
 {
     [Theory]
     [InlineData(@"SongBook.UI.MaterialIcons\Fonts\MaterialIcons-Regular.codepoints", "SongBook.UI.MaterialIcons.Fonts")]
-    [InlineData(@"C:\Source\SongBook.UI.MaterialIcons\Fonts\MaterialIcons-Regular.codepoints", "SongBook.UI.MaterialIcons.Fonts")]
-    [InlineData(@"Source\SongBook.UI.MaterialIcons\Fonts\MaterialIcons-Regular.codepoints", "SongBook.UI.MaterialIcons.Fonts")]
+    [InlineData(@"C:\Source\SongBook.UI.MaterialIcons\Fonts\MaterialIcons-Regular.codepoints",
+                "SongBook.UI.MaterialIcons.Fonts")]
+    [InlineData(@"Source\SongBook.UI.MaterialIcons\Fonts\MaterialIcons-Regular.codepoints",
+                "SongBook.UI.MaterialIcons.Fonts")]
     [InlineData(@"C:\Source\SongBook\Fonts\", "Source.SongBook.Fonts")]
     [InlineData(@"C:\Source\SongBook\Fonts", "Source.SongBook")]
     [InlineData(@"C:\", "")]

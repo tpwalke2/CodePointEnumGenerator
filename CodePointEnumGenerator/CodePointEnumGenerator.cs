@@ -1,60 +1,38 @@
 ﻿using CodePointEnumGenerator.Helpers;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace CodePointEnumGenerator;
 
 [Generator]
-public class CodePointEnumGenerator : ISourceGenerator
+public class CodePointEnumGenerator : IIncrementalGenerator
 {
     private const string CodepointsExtension = ".codepoints";
 
-    public void Initialize(GeneratorInitializationContext context)
+    public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        // initialization not required
-    }
+        var codePointFiles = GetCodePointFiles(context)
+            .Select((text, token) => (
+                        Name: text.GetEnumFileName(),
+                        Content: text.GetText(token)!
+                                     .ToString()
+                                     .GetEnumValues(),
+                        Namespace: text.Path.ToNamespace()));
 
-    public void Execute(GeneratorExecutionContext context)
-    {
-        var files = GetCodePointFiles(context).ToArray();
-        if (!files.Any())
-            context.ReportDiagnostic(
-                Diagnostic.Create(
-                    new DiagnosticDescriptor(
-                        // ReSharper disable once StringLiteralTypo
-                        "NOFILES",
-                        "No Codepoint files found",
-                        "",
-                        "",
-                        DiagnosticSeverity.Warning,
-                        true),
-                    null));
-        
-        foreach (var file in files)
+        context.RegisterSourceOutput(codePointFiles, (spc, file) =>
         {
-            var enumName = file.GetEnumFileName();
-
-            context.AddSource(
-                $"{enumName}.g.cs",
-                SourceText.From(
-                    CodeGeneration.BuildEnumFileContents(
-                        enumName,
-                        file.GetText()!
-                            .ToString()
-                            .GetEnumValues(),
-                        file.Path.ToNamespace()),
-                    Encoding.UTF8));
-        }
+            spc.AddSource(
+                $"{file.Name}.g.cs",
+                CodeGeneration.BuildEnumFileContents(
+                    file.Name,
+                    file.Content,
+                    file.Namespace));
+        });
     }
 
-    private static IEnumerable<AdditionalText> GetCodePointFiles(GeneratorExecutionContext context) =>
-        context.AdditionalFiles.Where(file => Path.GetExtension(file.Path)
-                                                  .Equals(
-                                                      CodepointsExtension,
-                                                      StringComparison.OrdinalIgnoreCase));
+    private static IncrementalValuesProvider<AdditionalText> GetCodePointFiles(
+        IncrementalGeneratorInitializationContext context) =>
+        context
+            .AdditionalTextsProvider
+            .Where(static file => file.Path.EndsWith(CodepointsExtension, StringComparison.OrdinalIgnoreCase));
 }

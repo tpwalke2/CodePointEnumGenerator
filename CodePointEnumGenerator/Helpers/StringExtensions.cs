@@ -59,7 +59,7 @@ public static class StringExtensions
 
             sb.Append(capture.FirstCharToUpper());
         }
-        
+
         return sb.ToString();
     }
 
@@ -70,10 +70,10 @@ public static class StringExtensions
 
         foreach (var line in contents
                      .Split(
-                         new[] { "\r\n", "\r", "\n" },
+                         ["\r\n", "\r", "\n"],
                          StringSplitOptions.RemoveEmptyEntries))
         {
-            var parsed = line.Split(new[] {" "}, StringSplitOptions.RemoveEmptyEntries);
+            var parsed = line.Split([" "], StringSplitOptions.RemoveEmptyEntries);
             if (parsed.Length != 2) continue;
 
             var enumValueName = parsed[0].ToEnumEntry();
