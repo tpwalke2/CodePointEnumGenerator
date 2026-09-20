@@ -6,7 +6,7 @@ A C# source generator that generates enums for all font codepoint files are cont
 Each resulting enum can be used for strongly-typed references to the byte value of specific glyphs in the associated font.
 
 # Links
-[![Build status](https://ci.appveyor.com/api/projects/status/2lgs7mbehdvls38q?svg=true)](https://ci.appveyor.com/project/tpwalke2/codepointenumgenerator)
+[![Build status](https://github.com/tpwalke2/CodePointEnumGenerator/actions/workflows/ci.yml/badge.svg)](https://github.com/tpwalke2/CodePointEnumGenerator/actions/workflows/ci.yml)
 
 [![NuGet](https://img.shields.io/nuget/v/CodePointEnumGenerator.svg)](https://www.nuget.org/packages/CodePointEnumGenerator/) 
 
