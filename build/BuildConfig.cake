@@ -18,7 +18,7 @@ public class BuildConfig
     [StringArgument(
         "currentRelease",
         Description = "The current release version.",
-        DefaultValue = "1.0.0"
+        DefaultValue = "1.0.1"
     )]
     public string CurrentRelease { get; set; }
 

@@ -17,7 +17,7 @@ Tasks, in dependency order: `Clean` → `Build` → `Test` → `Publish` → `De
 | `build/PublishOperations.cake` | `DoPublish` — only runs `IsRelease(branch)` (branch == `main`); packs, creates a GitHub release (`Release-{version}` tag), uploads the `.nupkg` asset, pushes to NuGet |
 | `build/GitHubApiModels.cake` | Request/response DTOs for the GitHub Releases REST API |
 
-Version = `CurrentRelease` (default `1.0.0`) + `.` + `buildNumber` argument, unless `currentVersion` is overridden.
+Version = `CurrentRelease` (default `1.0.1`) + `.` + `buildNumber` argument, unless `currentVersion` is overridden.
 
 ## CI (`.github/workflows/`)
 Two GitHub Actions workflows, both `windows-latest` (Cake's `FlushDns` NuGet-publish workaround needs Windows), both ignore changes to `README.md` and `agent-context/**`:
