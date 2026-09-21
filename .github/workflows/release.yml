@@ -25,4 +25,4 @@ jobs:
         run: dotnet cake build.cake --bootstrap --buildNumber=${{ github.run_number }} --branch="${{ github.ref_name }}" --buildPath="${{ github.workspace }}" --gitHubApiKey="${{ secrets.RELEASE_GITHUB_API_KEY }}" --nuGetApiKey="${{ secrets.NUGET_API_KEY }}"
 
       - name: Build, test, and publish
-        run: dotnet cake build.cake --buildNumber=${{ github.run_number }} --branch="${{ github.ref_name }}" --buildPath="${{ github.workspace }}" --gitHubApiKey="${{ secrets.RELEASE_GITHUB_API_KEY }}" --nuGetApiKey="${{ secrets.NUGET_API_KEY }}"
+        run: dotnet cake build.cake --buildNumber=${{ github.run_number }} --branch="${{ github.ref_name }}" --buildPath="${{ github.workspace }}" --gitHubApiKey="${{ secrets.RELEASE_GITHUB_API_KEY }}" --nuGetApiKey="${{ secrets.NUGET_API_KEY }}" --verbose=true --verbosity=Diagnostic
