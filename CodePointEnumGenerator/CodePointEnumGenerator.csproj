@@ -8,6 +8,7 @@
         <IsRoslynComponent>true</IsRoslynComponent>
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
         <IncludeBuildOutput>false</IncludeBuildOutput>
+        <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
         <Description>
             A C# source generator that generates enums for font codepoint files contained in the project that can then
             be used for strongly-typed references to the byte value of specific glyphs in the associated font.</Description>
