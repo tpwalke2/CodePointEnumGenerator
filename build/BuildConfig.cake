@@ -38,15 +38,15 @@ public class BuildConfig
 
     [StringArgument(
         "nuGetApiKey",
-        Description = "The API key for interacting with NuGet.",
-        Required = true
+        Description = "The API key for interacting with NuGet. Only required when publishing a release.",
+        DefaultValue = ""
     )]
     public string NuGetApiKey { get; set; }
 
     [StringArgument(
         "gitHubApiKey",
-        Description = "The API key for interacting with GitHub.",
-        Required = true
+        Description = "The API key for interacting with GitHub. Only required when publishing a release.",
+        DefaultValue = ""
     )]
     public string GitHubApiKey { get; set; }
 

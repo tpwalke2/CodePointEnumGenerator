@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'README.md'
+      - 'agent-context/**'
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore Cake tool
+        run: dotnet tool restore
+
+      - name: Cake bootstrap
+        run: dotnet cake build.cake --bootstrap --target=Test --buildNumber=${{ github.run_number }} --branch="${{ github.ref_name }}" --buildPath="${{ github.workspace }}"
+
+      - name: Build and test
+        run: dotnet cake build.cake --target=Test --buildNumber=${{ github.run_number }} --branch="${{ github.ref_name }}" --buildPath="${{ github.workspace }}"
