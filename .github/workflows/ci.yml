@@ -23,7 +23,7 @@ jobs:
         run: dotnet tool restore
 
       - name: Cake bootstrap
-        run: dotnet cake build.cake --bootstrap --buildNumber=${{ github.run_number }} --branch="${{ github.ref_name }}" --buildPath="${{ github.workspace }}"
+        run: dotnet cake build.cake --bootstrap --target=Test --buildNumber=${{ github.run_number }} --branch="${{ github.ref_name }}" --buildPath="${{ github.workspace }}"
 
       - name: Build and test
-        run: dotnet cake build.cake --buildNumber=${{ github.run_number }} --branch="${{ github.ref_name }}" --buildPath="${{ github.workspace }}"
+        run: dotnet cake build.cake --target=Test --buildNumber=${{ github.run_number }} --branch="${{ github.ref_name }}" --buildPath="${{ github.workspace }}"

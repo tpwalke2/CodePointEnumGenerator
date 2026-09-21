@@ -10,7 +10,7 @@ Roslyn incremental source generator. Scans project `AdditionalFiles` ending in `
 | Generator project | `netstandard2.0`, C# 14, `Microsoft.CodeAnalysis.CSharp` 5.9.0 |
 | Test project | `net10.0`, xunit 2.9.3, `Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing.XUnit` |
 | Build | Cake (`build.cake` + `build/*.cake`), driven by `bootstrap.ps1` |
-| CI | AppVeyor (`.appveyor.yml`), Visual Studio 2026 image, builds only `main` |
+| CI | GitHub Actions (`.github/workflows/ci.yml`, `release.yml`), `windows-latest` |
 | Packaging | NuGet (`CodePointEnumGenerator` package), GitHub Releases on publish |
 
 ## Top-level layout
