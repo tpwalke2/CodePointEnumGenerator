@@ -52,4 +52,4 @@ Plain text, one glyph per line: `<name> <hex-value>` (space-separated, exactly 2
 Consuming projects reference the package with `OutputItemType="Analyzer"` and mark `.codepoints` files with build action `AdditionalFiles`. See root `README.md` for the exact snippet and troubleshooting steps.
 
 ---
-*Last updated: 2026-09-20 | Verified against: 6b6c9cc*
+*Last updated: 2026-09-22 | Verified against: bb6a64c*

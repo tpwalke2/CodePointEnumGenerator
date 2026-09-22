@@ -1,14 +1,16 @@
 # Build & Release
 
 ## Local build
-`bootstrap.ps1` restores the `dotnet tool` manifest (`.config/dotnet-tools.json`, pins `cake.tool` 3.0.0) then runs `dotnet cake build.cake` twice (bootstrap pass, then real run), passing `buildNumber`, `branch`, `buildPath`, `gitHubApiKey`, `nuGetApiKey`. Checks `$LASTEXITCODE` after each step and exits non-zero on failure — `gitHubApiKey`/`nuGetApiKey` may be omitted for non-release builds (see below).
+`bootstrap.ps1` restores the `dotnet tool` manifest (`.config/dotnet-tools.json`, pins `cake.tool` 6.3.0) then runs `dotnet cake build.cake` twice (bootstrap pass, then real run), passing `buildNumber`, `branch`, `buildPath`, `gitHubApiKey`, `nuGetApiKey`. Checks `$LASTEXITCODE` after each step and exits non-zero on failure — `gitHubApiKey`/`nuGetApiKey` may be omitted for non-release builds (see below).
 
 ## Cake pipeline (`build.cake` + `build/*.cake`)
 Tasks, in dependency order: `Clean` → `Build` → `Test` → `Publish` → `Default`.
 
+`build.cake` builds a `BuildConfig` directly off Cake's `Argument()` calls (target, buildNumber, currentRelease, branch, buildPath, API keys, verbose, maxDegreeOfParallelism, currentVersion). `Cake.ArgumentBinder` was removed (#31) — `build/BuildConfig.cake` is now a plain POCO with no binding attributes.
+
 | Script | Role |
 |---|---|
-| `build/BuildConfig.cake` | CLI argument binding (`Cake.ArgumentBinder`) — target, buildNumber, branch, buildPath, API keys, verbose, maxDegreeOfParallelism, currentVersion |
+| `build/BuildConfig.cake` | Plain POCO holding parsed CLI arguments — target, buildNumber, branch, buildPath, API keys, verbose, maxDegreeOfParallelism, currentVersion |
 | `build/BuildPaths.cake` | Resolves `output/`, `output/deploy/`, `output/deploy/test-results/`, `output/artifacts/` |
 | `build/Utilities.cake` | `GetVersion` (`{CurrentRelease}.{BuildNumber}`), `ParallelInvoke`, `FlushDns` |
 | `build/BuildOperations.cake` | `DoBuild` — parallel clean of Debug/Release, restore, `DotNetBuild` (Debug config) |
@@ -32,4 +34,4 @@ AppVeyor is retired (`.appveyor.yml` removed).
 - Every release on `main` creates a `Release-{version}` GitHub tag/release with auto-generated notes, and publishes the same `.nupkg` to NuGet.
 
 ---
-*Last updated: 2026-09-20 | Verified against: 6b6c9cc*
+*Last updated: 2026-09-22 | Verified against: bb6a64c*
