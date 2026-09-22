@@ -22,4 +22,4 @@ Root `README.md` — package usage snippet, troubleshooting, build pipeline requ
 | `context/build-and-release.md` | `build.cake`, `build/`, `bootstrap.ps1`, `.github/workflows/`, `.config/dotnet-tools.json` |
 
 ---
-*Last updated: 2026-09-20 | Verified against: 6b6c9cc*
+*Last updated: 2026-09-22 | Verified against: bb6a64c*

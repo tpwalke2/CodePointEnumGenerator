@@ -26,4 +26,4 @@ xunit 2.9.3 in `CodePointEnumGenerator.Tests`, targets `net10.0` (generator itse
 Via Cake: `Task("Test")` in `build.cake` runs `dotnet test` (framework `net10.0`, `trx` logger) against every `*Tests.csproj`, in parallel (`build/TestOperations.cake`, `build/TestProject.cake`). Locally: `dotnet test` from repo root or the test project directly.
 
 ---
-*Last updated: 2026-09-20 | Verified against: 6b6c9cc*
+*Last updated: 2026-09-22 | Verified against: bb6a64c*

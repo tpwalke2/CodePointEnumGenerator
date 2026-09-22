@@ -1,14 +1,16 @@
 # Build & Release
 
 ## Local build
-`bootstrap.ps1` restores the `dotnet tool` manifest (`.config/dotnet-tools.json`, pins `cake.tool` 3.0.0) then runs `dotnet cake build.cake` twice (bootstrap pass, then real run), passing `buildNumber`, `branch`, `buildPath`, `gitHubApiKey`, `nuGetApiKey`. Checks `$LASTEXITCODE` after each step and exits non-zero on failure — `gitHubApiKey`/`nuGetApiKey` may be omitted for non-release builds (see below).
+`bootstrap.ps1` restores the `dotnet tool` manifest (`.config/dotnet-tools.json`, pins `cake.tool` 6.3.0) then runs `dotnet cake build.cake` twice (bootstrap pass, then real run), passing `buildNumber`, `branch`, `buildPath`, `gitHubApiKey`, `nuGetApiKey`. Checks `$LASTEXITCODE` after each step and exits non-zero on failure — `gitHubApiKey`/`nuGetApiKey` may be omitted for non-release builds (see below).
 
 ## Cake pipeline (`build.cake` + `build/*.cake`)
 Tasks, in dependency order: `Clean` → `Build` → `Test` → `Publish` → `Default`.
 
+`build.cake` builds a `BuildConfig` directly off Cake's `Argument()` calls (target, buildNumber, currentRelease, branch, buildPath, API keys, verbose, maxDegreeOfParallelism, currentVersion). `Cake.ArgumentBinder` was removed (#31) — `build/BuildConfig.cake` is now a plain POCO with no binding attributes.
+
 | Script | Role |
 |---|---|
-| `build/BuildConfig.cake` | CLI argument binding (`Cake.ArgumentBinder`) — target, buildNumber, branch, buildPath, API keys, verbose, maxDegreeOfParallelism, currentVersion |
+| `build/BuildConfig.cake` | Plain POCO holding parsed CLI arguments — target, buildNumber, branch, buildPath, API keys, verbose, maxDegreeOfParallelism, currentVersion |
 | `build/BuildPaths.cake` | Resolves `output/`, `output/deploy/`, `output/deploy/test-results/`, `output/artifacts/` |
 | `build/Utilities.cake` | `GetVersion` (`{CurrentRelease}.{BuildNumber}`), `ParallelInvoke`, `FlushDns` |
 | `build/BuildOperations.cake` | `DoBuild` — parallel clean of Debug/Release, restore, `DotNetBuild` (Debug config) |
@@ -20,9 +22,11 @@ Tasks, in dependency order: `Clean` → `Build` → `Test` → `Publish` → `De
 Version = `CurrentRelease` (default `1.0.1`) + `.` + `buildNumber` argument, unless `currentVersion` is overridden.
 
 ## CI (`.github/workflows/`)
-Two GitHub Actions workflows, both `windows-latest` (Cake's `FlushDns` NuGet-publish workaround needs Windows), both ignore changes to `README.md` and `agent-context/**`:
-- `ci.yml` — triggers on `pull_request` (any target) and `push` to `main`. Runs `dotnet tool restore` + both Cake steps directly (bypassing `bootstrap.ps1`, so a failed step fails the job natively). No secrets passed; `Publish` no-ops via `IsRelease(branch)`.
-- `release.yml` — triggers on `push` to `main` only (no `pull_request`, no tags — avoids retriggering off the tag it creates). Same steps, plus `RELEASE_GITHUB_API_KEY`/`NUGET_API_KEY` repo secrets and `buildNumber=${{ github.run_number }}`.
+Two GitHub Actions workflows, both `windows-latest` (Cake's `FlushDns` NuGet-publish workaround needs Windows):
+- `ci.yml` — triggers on `pull_request` (any target, unfiltered — runs regardless of which paths changed) and `push` to `main` (filtered: `paths-ignore` skips `README.md` and `agent-context/**`). Runs `dotnet tool restore` + both Cake steps directly (bypassing `bootstrap.ps1`, so a failed step fails the job natively). No secrets passed; `Publish` no-ops via `IsRelease(branch)`.
+- `release.yml` — triggers on `push` to `main` only (no `pull_request`, no tags — avoids retriggering off the tag it creates), filtered the same way (`paths-ignore`: `README.md`, `agent-context/**`) — a merge touching only those paths does not cut a release. Same steps, plus `RELEASE_GITHUB_API_KEY`/`NUGET_API_KEY` repo secrets and `buildNumber=${{ github.run_number }}`.
+
+`paths-ignore` is a per-trigger filter — attaching it under `push` does not exempt `pull_request`. Any PR runs `ci.yml` in full no matter what it touches; doc-only changes are only skipped once merged to `main` (both `ci.yml`'s push job and `release.yml`).
 
 AppVeyor is retired (`.appveyor.yml` removed).
 
@@ -32,4 +36,4 @@ AppVeyor is retired (`.appveyor.yml` removed).
 - Every release on `main` creates a `Release-{version}` GitHub tag/release with auto-generated notes, and publishes the same `.nupkg` to NuGet.
 
 ---
-*Last updated: 2026-09-20 | Verified against: 6b6c9cc*
+*Last updated: 2026-09-22 | Verified against: bb6a64c*
