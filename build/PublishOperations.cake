@@ -1,5 +1,5 @@
 // Addins
-#addin nuget:?package=Cake.Http&version=3.0.2
+#addin nuget:?package=Cake.Http&version=5.1.0
 
 // Usings
 using System.Text.Json;
