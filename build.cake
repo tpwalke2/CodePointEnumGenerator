@@ -1,6 +1,3 @@
-// Addins
-#addin nuget:?package=Cake.ArgumentBinder&version=3.0.0
-
 // Usings
 using System.IO;
 using System.Threading.Tasks;
@@ -14,7 +11,19 @@ using System.Threading.Tasks;
 #load "./build/PublishOperations.cake";
 
 // Arguments
-var config = CreateFromArguments<BuildConfig>();
+var config = new BuildConfig
+{
+    Target = Argument("target", "Default"),
+    BuildNumber = Argument<int>("buildNumber"),
+    CurrentRelease = Argument("currentRelease", "1.0.1"),
+    Branch = Argument<string>("branch"),
+    BuildPath = Argument<string>("buildPath"),
+    NuGetApiKey = Argument("nuGetApiKey", ""),
+    GitHubApiKey = Argument("gitHubApiKey", ""),
+    Verbose = Argument("verbose", false),
+    MaxDegreeOfParallelism = Argument("maxDegreeOfParallelism", 5),
+    CurrentVersion = Argument("currentVersion", "")
+};
 
 if (string.IsNullOrEmpty(config.CurrentVersion)) config.CurrentVersion = GetVersion(config);
 Information($"Current Version: {config.CurrentVersion}");
@@ -80,6 +89,6 @@ Task("Publish")
 
 Task("Default")
     .IsDependentOn("Publish")
-    .DescriptionFromArguments<BuildConfig>("Runs the build");
+    .Description("Runs the build");
 
 RunTarget(config.Target);
