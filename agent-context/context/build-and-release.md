@@ -22,9 +22,11 @@ Tasks, in dependency order: `Clean` → `Build` → `Test` → `Publish` → `De
 Version = `CurrentRelease` (default `1.0.1`) + `.` + `buildNumber` argument, unless `currentVersion` is overridden.
 
 ## CI (`.github/workflows/`)
-Two GitHub Actions workflows, both `windows-latest` (Cake's `FlushDns` NuGet-publish workaround needs Windows), both ignore changes to `README.md` and `agent-context/**`:
-- `ci.yml` — triggers on `pull_request` (any target) and `push` to `main`. Runs `dotnet tool restore` + both Cake steps directly (bypassing `bootstrap.ps1`, so a failed step fails the job natively). No secrets passed; `Publish` no-ops via `IsRelease(branch)`.
-- `release.yml` — triggers on `push` to `main` only (no `pull_request`, no tags — avoids retriggering off the tag it creates). Same steps, plus `RELEASE_GITHUB_API_KEY`/`NUGET_API_KEY` repo secrets and `buildNumber=${{ github.run_number }}`.
+Two GitHub Actions workflows, both `windows-latest` (Cake's `FlushDns` NuGet-publish workaround needs Windows):
+- `ci.yml` — triggers on `pull_request` (any target, unfiltered — runs regardless of which paths changed) and `push` to `main` (filtered: `paths-ignore` skips `README.md` and `agent-context/**`). Runs `dotnet tool restore` + both Cake steps directly (bypassing `bootstrap.ps1`, so a failed step fails the job natively). No secrets passed; `Publish` no-ops via `IsRelease(branch)`.
+- `release.yml` — triggers on `push` to `main` only (no `pull_request`, no tags — avoids retriggering off the tag it creates), filtered the same way (`paths-ignore`: `README.md`, `agent-context/**`) — a merge touching only those paths does not cut a release. Same steps, plus `RELEASE_GITHUB_API_KEY`/`NUGET_API_KEY` repo secrets and `buildNumber=${{ github.run_number }}`.
+
+`paths-ignore` is a per-trigger filter — attaching it under `push` does not exempt `pull_request`. Any PR runs `ci.yml` in full no matter what it touches; doc-only changes are only skipped once merged to `main` (both `ci.yml`'s push job and `release.yml`).
 
 AppVeyor is retired (`.appveyor.yml` removed).
 
